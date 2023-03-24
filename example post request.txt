@@ -1,0 +1,20 @@
+{
+    "Title": "The Final Empire",
+    "Author":Brandon Sanderson",
+    "Rating": 9,
+    "Pages": 420,
+    "Genres": [
+        "fantasy",
+        "magic"
+    ],
+    "Reviews": [
+      {
+        "Name": "Shaun",
+        "body": "Couldn't put this book down."
+      },
+      {
+        "Name": "Chun-li",
+        "Body": "Love it."
+      }
+    ]
+}

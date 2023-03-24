@@ -1,0 +1,78 @@
+{Title: "Dune", Author: "Frank Herbert", Pages: 500, Rating: 5, Genres: ["sci-fi", "dystopian"]}, {Title: "Yellow Sun", Author: "Bro Ocholla", Pages: 350, Rating: 8, Genres: ["fiction", "thriller"]}
+db.Books.find({Author: "Terry Pratchett"}, {Title: 1, Author: 1})
+db.Books.find().sort({ Title: 1})
+db.Books.find().sort({ Title: 1}).limit(3)
+
+db.Books.insertOne({Title: "The Way of Kings", Author: "Brandon Sanderson", Rating: 9, Pages: 400, Genres: ["fantasy"], Reviews: [{Name: "Yoshi", Body: "Great Book!!!"}, {Name: "Mario", Body: "So So"}]})
+
+db.Books.insertMany([{Title: "The Light Fantastic", Author: "Terry Pratchett", Rating: 6, Pages: 250, Genres: ["fantasy", "magic"], Reviews: [{Name: "Luigi", Body: "It was pretty good"}, {Name: "Bowser", Body: "Loved it"}]}, {Title: "The Name of the Wind", Author: "Patrick Rothfuss", Rating: 10, Pages: 500, Genres: ["fantasy"], Reviews: [{Name: "Peach", Body: "One of My Faves"}]}, {Title: "The Color of Magic", Author: "Terry Pratchett", Rating: 8, Pages: 350, Genres: ["fantasy", "magic"], Reviews: [{Name: "Luigi", Body: "It was ok"}, {Name: "Bowser", Body: "Really good book"}]}, {Title: "1984", Author: "George Orwell", Rating: 6, Pages: 300, Genres: ["Sci-fi", "dystopian"], Reviews: [{Name: "Peach", Body: "Not my cup of tea"}, {Name: "Mario", Body: "meh"}]}])
+
+db.Books.find({ Rating: {$gt: 7}})
+db.Books.find({ Rating: {$lt: 7}})
+db.Books.find({ Rating: {$lte: 7}})
+db.Books.find({ Rating: {$gte: 7}})
+
+db.Books.find({ Rating: {$gt: 7}, Author: "Patrick Rothfuss"})
+
+db.Books.find({ $or: [{Rating: 7}, {Rating: 9}]})
+
+db.Books.find({ $or: [{Rating: 7}, {Author: "Terry Pratchett"}]})
+
+db.Books.find({$or: [{Pages: {$lt: 300}}, {Pages: {$gt: 400}}]})
+
+db.Books.find({ Rating: {$in: [7,8,9]}})
+
+db.Book.find({$or: [{Rating: 7}, {Rating: 8}, {Rating:9}]})
+
+db.Books.find({ Rating: {$nin: [7,8,9]}})
+
+QUERYING ARRAYS
+
+general query, can contain other arrays
+db.Books.find({Genres: "fantasy"})
+
+specific query
+db.Books.find({Genres: ["fantasy"]})
+
+either or
+db.Books.find({Genres: ["fantasy", "magic"]})
+
+both must be in array
+db.Books.find({Genres: {$all: ["fantasy", "sci-fi"]}})
+
+query nested documents
+db.Books.find({"Reviews.Name": "Luigi"})
+
+Delete objects
+by ID
+db.Books.deleteOne({_id: ObjectId(".................")})
+
+db.Books.deleteMany({Author: "Terry Pratchett"})
+
+Updating objects
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c4")}, {$set: {Rating: 8, Pages: 360}})
+
+db.Books.updateMany({Author: "Terry Pratchett"}, {$set: {Author: "Terry Pratchet"}})
+
+Mongodb Operators
+increase maybe a running score
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c5")}, {$inc: {Pages: 2}})
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c5")}, {$inc: {Pages: -2}})
+
+push or pull operators
+pull takes out value out of array
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c5")}, {$pull: {Genres: "dystopian"}})
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c5")}, {$push: {Genres: "dystopian"}})
+
+each operator
+db.Books.updateOne({_id: ObjectId("641caf1454bd7df4688114c5")}, {$push: {Genres: {$each: ["1", "2"]}}})
+
+
+execution stats 
+db.Books.find({ Rating: 8}].explain('executionStats')
+
+create indexes
+db.Books.createIndex({ Rating: 8})
+
+list all indexes
+db.Books.getIndexes()
